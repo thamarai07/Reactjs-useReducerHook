@@ -38,53 +38,60 @@ function App() {
   const handleTodoList = () => {
     if (text === "") {
       seterror(true);
+      alert("please enter values`1")
     } else {
       dispatch({ type: "ADD_TODO", text });
       seterror(false);
-      settext("")
+      settext("");
     }
   };
+  console.log(error)
 
   return (
     <>
       <div className="container">
-      <div className="todo__wrapper">
-        <input
-          name="state"
-          value={text}
-          onChange={(e) => settext(e.target.value)}
-        />
-        <button className="add" onClick={handleTodoList}>Add List</button>
-        {error && <p className="error">Please add a todo!</p>}
-        <ul>
-          {state.todos.map((value) => (
-            <li key={value.id}>
-              <span
-                style={{
-                  textDecoration: value.completed ? "line-through" : "none",
-                }}
-                className={`${ value.completed  && "completed"}`}
-              >
-                {value.text} {value.id}
-              </span>
-              <button
-                onClick={() =>
-                  dispatch({
-                    type: "TOGGLE_TODO",
-                    id: value.id,
-                  })
-                }
-              >
-                {value.completed ? "Undo" : "Completed"}
-              </button>
-              <button
-                onClick={() => dispatch({ type: "REMOVE_TODO", id: value.id })}
-              >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div className="todo__wrapper">
+          <input
+            name="state"
+            value={text}
+            onChange={(e) => settext(e.target.value)}
+          />
+          <button className="add" onClick={handleTodoList}>
+            Add List
+          </button>
+          {error && <p className="error">Please add a todo!</p>}
+          <ul>
+            {state.todos.map((value) => (
+              <li key={value.id}>
+                <span
+                  style={{
+                    textDecoration: value.completed ? "line-through" : "none",
+                  }}
+                  className={`${value.completed && "completed"}`}
+                >
+                  {value.text} {value.id}
+                </span>
+                <button
+                  onClick={() => {
+                    dispatch({
+                      type: "TOGGLE_TODO",
+                      id: value.id,
+                    });
+                    seterror(false);
+                  }}
+                >
+                  {value.completed ? "Undo" : "Completed"}
+                </button>
+                <button
+                  onClick={() =>
+                    dispatch({ type: "REMOVE_TODO", id: value.id })
+                  }
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </>
