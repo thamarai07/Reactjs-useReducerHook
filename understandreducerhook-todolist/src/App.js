@@ -16,6 +16,8 @@ function todoreducer(state, action) {
       return {
         todos: state.todos.filter((todo) => todo.id !== action.id),
       };
+    case "SHOW_ERROR":
+      return state;
     case "TOGGLE_TODO":
       return {
         todos: state.todos.map((todo) =>
@@ -31,21 +33,29 @@ function App() {
   const [state, dispatch] = useReducer(todoreducer, initialState);
 
   const [text, settext] = useState("");
+  const [error, seterror] = useState(false);
 
   const handleTodoList = () => {
-    dispatch({ type: "ADD_TODO", text });
-    settext("");
+    if (text === "") {
+      seterror(true);
+    } else {
+      dispatch({ type: "ADD_TODO", text });
+      seterror(false);
+      settext("")
+    }
   };
 
   return (
     <>
-      <div>
+      <div className="container">
+      <div className="todo__wrapper">
         <input
           name="state"
           value={text}
           onChange={(e) => settext(e.target.value)}
         />
-        <button onClick={handleTodoList}>Add List</button>
+        <button className="add" onClick={handleTodoList}>Add List</button>
+        {error && <p className="error">Please add a todo!</p>}
         <ul>
           {state.todos.map((value) => (
             <li key={value.id}>
@@ -53,8 +63,9 @@ function App() {
                 style={{
                   textDecoration: value.completed ? "line-through" : "none",
                 }}
+                className={`${ value.completed  && "completed"}`}
               >
-                {value.text}
+                {value.text} {value.id}
               </span>
               <button
                 onClick={() =>
@@ -74,6 +85,7 @@ function App() {
             </li>
           ))}
         </ul>
+        </div>
       </div>
     </>
   );
