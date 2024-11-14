@@ -9,7 +9,7 @@ const cardReducer = (state, action) => {
         ...state,
         {
           id: action.id,
-          name: action.name,
+          name: action.name ,
           price: action.price,
           quantity: 1,
         },
